@@ -3,6 +3,7 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import { Prisma } from "@prisma/client";
 import { config } from "./lib/config";
+import { ensureDefaultAdmin } from "./lib/ensureDefaultAdmin";
 import { authMiddleware } from "./middleware/auth";
 import authRoutes from "./routes/auth";
 import periodRoutes from "./routes/periods";
@@ -70,6 +71,14 @@ app.use(
   }
 );
 
-app.listen(config.port, () => {
-  console.log(`API running on http://localhost:${config.port}`);
+async function start() {
+  await ensureDefaultAdmin();
+  app.listen(config.port, () => {
+    console.log(`API running on http://localhost:${config.port}`);
+  });
+}
+
+start().catch((err) => {
+  console.error("Failed to start API:", err);
+  process.exit(1);
 });

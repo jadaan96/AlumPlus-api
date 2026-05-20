@@ -73,27 +73,20 @@ Usually Render is using an old **Node** version. Fix:
 2. **Manual Deploy** → **Deploy latest commit** (after pulling latest `main` with `.node-version`).
 3. Build command should stay: `npm install && npm run build`
 
-## 6) Seed admin user (required — login fails without this)
+## 6) تسجيل الدخول (حساب ثابت)
 
-Migrations create **tables only**, not the `admin` user. Until you seed, `admin` / `admin123` returns **401**.
+عند كل تشغيل للخادم يُنشأ/يُحدَّث مستخدم **`admin`** تلقائياً (كلمة المرور من `ADMIN_PASSWORD` أو الافتراضي `admin123`).
 
-**Render Shell** (Web Service → **Shell**), from repo root:
+لا حاجة لـ `npm run db:seed` من أجل تسجيل الدخول.
 
-```bash
-npm run db:seed
-```
+لتغيير الحساب في الإنتاج عيّن على Render:
 
-Or from your PC (with `DATABASE_URL` = Render **External** Postgres URL):
+- `ADMIN_USERNAME`
+- `ADMIN_PASSWORD`
 
-```bash
-npm install
-npx prisma migrate deploy
-npm run db:seed
-```
+**غيّرها في الإنتاج** — لا تترك `admin123` على سيرفر عام.
 
-Or temporarily add a **one-off** Render **Shell** command if you prefer (same commands from repo root).
-
-Default login if you use the seed from `.env.example` values: `admin` / `admin123` — **change passwords in production.**
+اختياري: `npm run db:seed` مرة واحدة لملء **فئات المصروفات** الافتراضية إن احتجتها.
 
 ## 7) Point Netlify at this API
 

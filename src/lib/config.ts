@@ -3,10 +3,15 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const corsRaw = process.env.CORS_ORIGIN || "http://localhost:5173";
+
+function normalizeOrigin(url: string): string {
+  return url.trim().replace(/\/+$/, "");
+}
+
 /** عدة دومينات مفصولة بفاصلة للإنتاج (فرونت + معاينة) */
 export const corsOrigins = corsRaw
   .split(",")
-  .map((s) => s.trim())
+  .map(normalizeOrigin)
   .filter(Boolean);
 
 export const config = {

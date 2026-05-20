@@ -22,9 +22,16 @@ if (process.env.TRUST_PROXY === "1" || process.env.NODE_ENV === "production") {
   app.set("trust proxy", 1);
 }
 
+const allowedOrigins = new Set(config.corsOrigins);
+
 app.use(
   cors({
-    origin: config.corsOrigins.length === 1 ? config.corsOrigins[0] : config.corsOrigins,
+    origin(origin, callback) {
+      if (!origin) return callback(null, true);
+      const normalized = origin.replace(/\/+$/, "");
+      if (allowedOrigins.has(normalized)) return callback(null, normalized);
+      callback(null, false);
+    },
     credentials: true,
   })
 );

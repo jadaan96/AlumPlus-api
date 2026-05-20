@@ -36,7 +36,7 @@ In the Web Service → **Environment** → add:
 | `DATABASE_URL` | Paste the **External** Postgres URL from step 1 |
 | `JWT_ACCESS_SECRET` | Long random string (32+ chars) |
 | `JWT_REFRESH_SECRET` | Different long random string |
-| `CORS_ORIGIN` | Your Netlify URL **exactly**, e.g. `https://your-site.netlify.app` (no trailing `/`; comma‑separate if multiple). If wrong, the browser blocks login from the site. |
+| `CORS_ORIGIN` | Netlify URL **without** trailing `/`, e.g. `https://alumplus-web.netlify.app` (not `...app/`). Comma‑separate for preview + production. |
 | `NODE_ENV` | `production` |
 | `TRUST_PROXY` | `1` (recommended behind Render’s proxy) |
 | `NODE_VERSION` | `22` (if build fails on `@prisma/engines` postinstall, add this and redeploy) |

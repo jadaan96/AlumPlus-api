@@ -65,13 +65,23 @@ You should see JSON like:
 
 If you get **502** or the app never starts, open **Logs** on the service and check for Prisma / `DATABASE_URL` errors.
 
-### Build failed: `@prisma/engines` postinstall
+### Build shows **Node v14** (or Prisma `@prisma/engines` fails)
 
-Usually Render is using an old **Node** version. Fix:
+Prisma 6 **does not work on Node 14**. You must force **Node 22** on Render:
 
-1. Web Service → **Environment** → add **`NODE_VERSION`** = `22` → Save.
-2. **Manual Deploy** → **Deploy latest commit** (after pulling latest `main` with `.node-version`).
-3. Build command should stay: `npm install && npm run build`
+1. Open your **Web Service** (not the database).
+2. Left menu → **Environment**.
+3. **Add Environment Variable:**
+   - Key: `NODE_VERSION`
+   - Value: `22` (digits only, no `v` prefix)
+4. Click **Save Changes**.
+5. **Manual Deploy** → **Deploy latest commit**.
+
+In the **new build log**, confirm you see something like **Node 22.x** (not 14).
+
+The repo also ships `.node-version` and `.nvmrc` with `22`, but the **`NODE_VERSION` env var overrides** and is the most reliable fix when Render stuck on 14.
+
+Build command should stay: `npm install && npm run build`
 
 ## 6) Seed admin user (first time)
 

@@ -20,6 +20,7 @@ Repo: `https://github.com/jadaan96/AlumPlus-api`
    - **Branch:** `main`
    - **Root directory:** leave **empty** (repo root is already the API)
    - **Runtime:** `Node`
+   - **Node version:** `22` (repo includes `.node-version`; or set env **`NODE_VERSION`** = `22` under Environment — required for Prisma 6)
    - **Build command:**  
      `npm install && npm run build`
    - **Start command:**  
@@ -38,6 +39,7 @@ In the Web Service → **Environment** → add:
 | `CORS_ORIGIN` | Your Netlify URL, e.g. `https://your-site.netlify.app` (comma‑separate if multiple) |
 | `NODE_ENV` | `production` |
 | `TRUST_PROXY` | `1` (recommended behind Render’s proxy) |
+| `NODE_VERSION` | `22` (if build fails on `@prisma/engines` postinstall, add this and redeploy) |
 
 Optional (defaults exist in code / seed):
 
@@ -62,6 +64,14 @@ You should see JSON like:
 ```
 
 If you get **502** or the app never starts, open **Logs** on the service and check for Prisma / `DATABASE_URL` errors.
+
+### Build failed: `@prisma/engines` postinstall
+
+Usually Render is using an old **Node** version. Fix:
+
+1. Web Service → **Environment** → add **`NODE_VERSION`** = `22` → Save.
+2. **Manual Deploy** → **Deploy latest commit** (after pulling latest `main` with `.node-version`).
+3. Build command should stay: `npm install && npm run build`
 
 ## 6) Seed admin user (first time)
 
